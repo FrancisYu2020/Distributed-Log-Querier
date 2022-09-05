@@ -18,26 +18,23 @@ func (p *grepLogService) GrepLog(request string, reply *string) error {
 	return nil
 }
 
-func makeServer(port string) {
+func openLogServer(port string) {
 	rpc.RegisterName("grepLogService", new(grepLogService))
-
 	listener, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatal("ListenTCP error:", err)
 	}
 
-	conn, err := listener.Accept()
-	if err != nil {
-		log.Fatal("Accept error:", err)
+	for {
+		conn, err := listener.Accept()
+		if err != nil {
+			log.Fatal("Accept error:", err)
+		}
+
+		rpc.ServeConn(conn)
 	}
-
-	rpc.ServeConn(conn)
-
 }
 
 func main() {
-	go makeServer(":1234")
-	go makeServer(":1235")
-	for {
-	}
+	openLogServer(":1234")
 }

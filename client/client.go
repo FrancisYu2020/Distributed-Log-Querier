@@ -25,10 +25,11 @@ func main() {
 	defer wg.Wait()
 
 	c := make(chan string)
-	ips := [2]ipAddress{{"127.0.0.1:1234", "machine 1"}, {"127.0.0.1:1235", "machine 2"}}
+	// ips := [2]ipAddress{{"127.0.0.1:1234", "machine 1"}, {"127.0.0.1:1235", "machine 2"}}
+	ips := [1]ipAddress{{"127.0.0.1:1234", "machine 1"}}
 
-	wg.Add(2)
 	for _, ip := range ips {
+		wg.Add(1)
 		go func(ip ipAddress) {
 			client, err := rpc.Dial("tcp", ip.address)
 			if err != nil {
@@ -36,7 +37,7 @@ func main() {
 			}
 
 			var reply string
-			err = client.Call("grepLogService.GrepLog", "grep -c log ../test_logs/log1", &reply)
+			err = client.Call("grepLogService.GrepLog", "grep -Ec log ../test_logs/log1", &reply)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -50,16 +51,16 @@ func main() {
 	var f *os.File
 	var err1 error
 	if checkFileIsExist(filename) { // if file exists
-		f, err1 = os.OpenFile(filename, os.O_APPEND, 0666) //open the file
-	} else {
-		f, err1 = os.Create(filename) // if file not exists, create the file
+		err1 = os.Remove(filename) // remove this file
 	}
+	f, err1 = os.Create(filename) // if file not exists, create the file
+
 	if err1 != nil {
 		log.Fatal(err1)
 	}
 
 	defer f.Close()
-	for i := 0; i < 2; i++ {
+	for i := 0; i < 1; i++ {
 		_, err1 := io.WriteString(f, <-c) // write logs to the file
 		if err1 != nil {
 			panic(err1)
