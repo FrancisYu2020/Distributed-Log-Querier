@@ -10,4 +10,4 @@ echo VM10 Updating
 ssh tian23@fa22-cs425-2210.cs.illinois.edu "cd ./mp1-hangy6-tian23; git pull; exit"
 echo VM10 Updated
 
-echo "All VMs Has Been Updated!"
+echo "All VMs Have Been Updated!"
