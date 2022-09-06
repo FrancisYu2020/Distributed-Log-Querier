@@ -1,10 +1,10 @@
-vm.10.log: dial tcp 172.22.156.75:1234: connect: connection refused
 vm.7.log: dial tcp 172.22.156.74:1234: connect: connection refused
-vm.6.log: dial tcp 172.22.94.73:1234: connect: connection refused
 vm.8.log: dial tcp 172.22.158.74:1234: connect: connection refused
 vm.9.log: dial tcp 172.22.94.74:1234: connect: connection refused
+vm.10.log: dial tcp 172.22.156.75:1234: connect: connection refused
 vm.3.log: dial tcp 172.22.94.72:1234: connect: connection refused
 vm.5.log: dial tcp 172.22.158.73:1234: connect: connection refused
 vm.4.log: dial tcp 172.22.156.73:1234: connect: connection refused
-vm.2.log: dial tcp 172.22.158.72:1234: connect: connection refused
-vm.1.log:4
+vm.6.log: dial tcp 172.22.94.73:1234: connect: connection refused
+vm.1.log: unexpected EOF
+vm.2.log: unexpected EOF
