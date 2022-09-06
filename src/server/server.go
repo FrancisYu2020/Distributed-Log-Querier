@@ -1,11 +1,11 @@
 package main
 
 import (
-	"distributed-log/utils"
 	"fmt"
 	"log"
 	"net"
 	"net/rpc"
+	"utils"
 )
 
 type grepLogService struct{}
