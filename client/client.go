@@ -26,7 +26,7 @@ func main() {
 
 	c := make(chan string)
 	// ips := [2]ipAddress{{"127.0.0.1:1234", "machine 1"}, {"127.0.0.1:1235", "machine 2"}}
-	ips := [1]ipAddress{{"127.0.0.1:1234", "machine 1"}}
+	ips := [3]ipAddress{{"172.22.156.72", "machine 1"}, {"172.22.158.72", "machine 2"}, {"172.22.94.72", "machine 3"}}
 
 	for _, ip := range ips {
 		wg.Add(1)
