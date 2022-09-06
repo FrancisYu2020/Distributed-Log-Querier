@@ -25,8 +25,7 @@ func main() {
 	defer wg.Wait()
 
 	c := make(chan string)
-	// ips := [2]ipAddress{{"127.0.0.1:1234", "machine 1"}, {"127.0.0.1:1235", "machine 2"}}
-	ips := [3]ipAddress{{"172.22.156.72", "machine 1"}, {"172.22.158.72", "machine 2"}, {"172.22.94.72", "machine 3"}}
+	ips := [3]ipAddress{{"172.22.156.72:1234", "machine 1"}, {"172.22.158.72:1234", "machine 2"}, {"172.22.94.72:1234", "machine 3"}}
 
 	for _, ip := range ips {
 		wg.Add(1)
@@ -37,7 +36,7 @@ func main() {
 			}
 
 			var reply string
-			err = client.Call("grepLogService.GrepLog", "grep -Ec log ../test_logs/log1", &reply)
+			err = client.Call("grepLogService.GrepLog", "grep -E log ../test_logs/log1", &reply)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -60,7 +59,7 @@ func main() {
 	}
 
 	defer f.Close()
-	for i := 0; i < 1; i++ {
+	for i := 0; i < 3; i++ {
 		_, err1 := io.WriteString(f, <-c) // write logs to the file
 		if err1 != nil {
 			panic(err1)
