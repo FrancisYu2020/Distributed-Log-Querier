@@ -22,7 +22,7 @@ func checkFileIsExist(filename string) bool {
 
 func handleError(err error, c chan string, wg *sync.WaitGroup) {
 	defer wg.Done()
-	c <- string(err.Error())
+	c <- string(err.Error() + "\n")
 }
 
 func main() {
@@ -30,7 +30,7 @@ func main() {
 	defer wg.Wait()
 
 	c := make(chan string) // use chanel to send logs safely
-	ips := [3]ipAddress{{"172.22.156.72:1234", "machine 1"}, {"172.22.158.72:1234", "machine 2"}, {"172.22.94.72:1234", "machine 3"}}
+	ips := [3]ipAddress{{"172.22.156.72:1234", "machine.1"}, {"172.22.158.72:1234", "machine.2"}, {"172.22.94.72:1234", "machine.3"}}
 
 	for _, ip := range ips {
 		wg.Add(1)               // add one when set a new task
@@ -42,7 +42,7 @@ func main() {
 			}
 
 			var reply string
-			err = client.Call("grepLogService.GrepLog", "grep -E log ../test_logs/log1", &reply) // RPC
+			err = client.Call("grepLogService.GrepLog", "grep -Ec log ../test_logs/log1 "+ip.name+".log: ", &reply) // RPC
 			if err != nil {
 				handleError(err, c, &wg)
 				return

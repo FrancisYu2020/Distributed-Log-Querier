@@ -14,7 +14,7 @@ func (p *grepLogService) GrepLog(request string, reply *string) error {
 	fmt.Printf("grep command：%v\n", request)
 
 	log := utils.Grep(request)
-	*reply = "This is the log\n" + log
+	*reply = log
 	return nil
 }
 

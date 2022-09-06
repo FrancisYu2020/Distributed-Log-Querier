@@ -1,10 +1,5 @@
-dial tcp 172.22.94.72:1234: connect: connection refusedThis is the log
-Hello this is a test log.
-log
-log
-log
+dial tcp 172.22.94.72:1234: connect: connection refused
 This is the log
-Hello this is a test log.
-log
-log
-log
+4
+This is the log
+4

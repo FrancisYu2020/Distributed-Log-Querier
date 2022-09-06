@@ -13,5 +13,5 @@ func Grep(command string) string {
 	if err != nil {
 		log.Fatalf("failed to call cmd.Run(): %v", err)
 	}
-	return string(data)
+	return params[4] + string(data)
 }
