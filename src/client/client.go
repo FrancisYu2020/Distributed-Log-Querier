@@ -13,6 +13,7 @@ type ipAddress struct {
 	name    string
 }
 
+// check wheter 'filename' file exists
 func checkFileIsExist(filename string) bool {
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
 		return false
@@ -20,9 +21,9 @@ func checkFileIsExist(filename string) bool {
 	return true
 }
 
-func handleError(err error, c chan string, wg *sync.WaitGroup) {
+func handleError(err error, c chan string, wg *sync.WaitGroup, ip ipAddress) {
 	defer wg.Done()
-	c <- string(err.Error() + "\n")
+	c <- string(ip.name + ".log: " + err.Error() + "\n")
 }
 
 func main() {
@@ -37,7 +38,7 @@ func main() {
 		go func(ip ipAddress) { // connect to one server and try to execute RPC on that server
 			client, err := rpc.Dial("tcp", ip.address) // set connection
 			if err != nil {
-				handleError(err, c, &wg)
+				handleError(err, c, &wg, ip)
 				return
 			}
 
