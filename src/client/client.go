@@ -55,10 +55,10 @@ func main() {
 				handleError(err, c, &wg, server)
 				return
 			}
-			c <- server.Name + ": " + reply.log // use channel send logs back
-			if reply.ok {
+			c <- server.Name + ": " + reply.Log // use channel send logs back
+			if reply.Ok {
 				totalSuccessNum += 1
-				match, err := strconv.Atoi(reply.log)
+				match, err := strconv.Atoi(reply.Log)
 				if err != nil {
 				} else {
 					totalMatch += match
