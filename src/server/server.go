@@ -1,8 +1,7 @@
 package main
 
 import (
-	"bytes"
-	"encoding/gob"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net"
@@ -11,20 +10,21 @@ import (
 )
 
 type replyStruct struct {
-	log string
-	ok  bool
+	Log string `json:log`
+	Ok  bool   `json:ok`
 }
 
 type grepLogService struct{}
 
-func (p *grepLogService) GrepLog(request string, reply *bytes.Buffer) error {
+func (p *grepLogService) GrepLog(request string, reply *string) error {
 	fmt.Printf("grep command：%v\n", request) // print the request command
 
 	log, ok := utils.Grep(request) // get the log query results
 	data := replyStruct{log, ok}
+	jsonData, _ := json.Marshal(data)
+	str := string(jsonData)
+	reply = &str
 
-	enc := gob.NewEncoder(reply)
-	enc.Encode(data)
 	return nil
 }
 

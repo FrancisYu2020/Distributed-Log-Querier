@@ -1,8 +1,7 @@
 package main
 
 import (
-	"bytes"
-	"encoding/gob"
+	"encoding/json"
 	"io"
 	"log"
 	"net/rpc"
@@ -13,8 +12,8 @@ import (
 )
 
 type replyStruct struct {
-	log string
-	ok  bool
+	Log string `json:log`
+	Ok  bool   `json:ok`
 }
 
 // check wheter 'filename' file exists
@@ -51,7 +50,7 @@ func main() {
 				return
 			}
 
-			var reply *bytes.Buffer
+			var reply *string
 			command := "grep -Ec log " + server.FilePath + " " + server.Name + ".log: "
 			err = client.Call("grepLogService.GrepLog", &command, &reply) // RPC
 			if err != nil {
@@ -60,13 +59,12 @@ func main() {
 			}
 
 			var message replyStruct
-			dec := gob.NewDecoder(reply)
-			dec.Decode(&message)
+			json.Unmarshal([]byte(*reply), &message)
 
-			c <- server.Name + ": " + message.log // use channel send logs back
-			if message.ok {
+			c <- server.Name + ": " + message.Log // use channel send logs back
+			if message.Ok {
 				totalSuccessNum += 1
-				match, err := strconv.Atoi(message.log)
+				match, err := strconv.Atoi(message.Log)
 				if err != nil {
 				} else {
 					totalMatch += match
