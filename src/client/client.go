@@ -53,7 +53,7 @@ func main() {
 
 			var reply string
 			command := "grep -Ec log " + server.FilePath + " " + server.Name + ".log: "
-			err = client.Call("grepLogService.GrepLog", command, reply) // RPC
+			err = client.Call("grepLogService.GrepLog", command, &reply) // RPC
 			if err != nil {
 				handleError(err, c, &wg, server)
 				return
