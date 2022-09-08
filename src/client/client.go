@@ -3,6 +3,7 @@ package main
 import (
 	"io"
 	"log"
+	"mp1-hangy6-tian23/src/utils"
 	"net/rpc"
 	"os"
 	"sync"
@@ -21,9 +22,9 @@ func checkFileIsExist(filename string) bool {
 	return true
 }
 
-func handleError(err error, c chan string, wg *sync.WaitGroup, ip ipAddress) {
+func handleError(err error, c chan string, wg *sync.WaitGroup, server utils.Server) {
 	defer wg.Done()
-	c <- string(ip.name + ".log: " + err.Error() + "\n")
+	c <- string(server.Name + ".log: " + err.Error() + "\n")
 }
 
 func main() {
@@ -31,39 +32,28 @@ func main() {
 	defer wg.Wait()
 
 	c := make(chan string) // use chanel to send logs safely
-	ips := [10]ipAddress{
-		{"fa22-cs425-2201.cs.illinois.edu:1234", "vm.1"},
-		{"fa22-cs425-2202.cs.illinois.edu:1234", "vm.2"},
-		{"fa22-cs425-2203.cs.illinois.edu:1234", "vm.3"},
-		{"fa22-cs425-2204.cs.illinois.edu:1234", "vm.4"},
-		{"fa22-cs425-2205.cs.illinois.edu:1234", "vm.5"},
-		{"fa22-cs425-2206.cs.illinois.edu:1234", "vm.6"},
-		{"fa22-cs425-2207.cs.illinois.edu:1234", "vm.7"},
-		{"fa22-cs425-2208.cs.illinois.edu:1234", "vm.8"},
-		{"fa22-cs425-2209.cs.illinois.edu:1234", "vm.9"},
-		{"fa22-cs425-2210.cs.illinois.edu:1234", "vm.10"},
-	}
+	servers := utils.LoadConfig()
 
-	for _, ip := range ips {
+	for _, server := range servers {
 		wg.Add(1) // add one when set a new task
 		// use goutine to execute concurrently
-		go func(ip ipAddress) { // connect to one server and try to execute RPC on that server
-			client, err := rpc.Dial("tcp", ip.address) // set connection
+		go func(server utils.Server) { // connect to one server and try to execute RPC on that server
+			client, err := rpc.Dial("tcp", server.IpAddr+":"+server.Port) // set connection
 			if err != nil {
-				handleError(err, c, &wg, ip)
+				handleError(err, c, &wg, server)
 				return
 			}
 
 			var reply string
-			err = client.Call("grepLogService.GrepLog", "grep -Ec log ../test_logs/log1 "+ip.name+".log: ", &reply) // RPC
+			err = client.Call("grepLogService.GrepLog", "grep -Ec log ../test_logs/log1 "+server.Name+".log: ", &reply) // RPC
 			if err != nil {
-				handleError(err, c, &wg, ip)
+				handleError(err, c, &wg, server)
 				return
 			}
 			c <- reply // use channel send logs back
 
 			wg.Done() // minus one when finish a task
-		}(ip)
+		}(server)
 	}
 
 	var filename = "./test.txt" // path of the log file
@@ -79,7 +69,7 @@ func main() {
 	}
 
 	defer f.Close()
-	for i := 0; i < len(ips); i++ {
+	for i := 0; i < len(servers); i++ {
 		_, err1 := io.WriteString(f, <-c) // write logs to the file
 		if err1 != nil {
 			panic(err1)
