@@ -15,11 +15,12 @@ type replyStruct struct {
 	ok  bool
 }
 
-func (p *grepLogService) GrepLog(request string, reply *replyStruct) error {
+func (p *grepLogService) GrepLog(request string, reply *string) error {
 	fmt.Printf("grep command：%v\n", request) // print the request command
 
 	log, ok := utils.Grep(request) // get the log query results
-	*reply = replyStruct{log, ok}  // send reply back to client
+	// *reply = replyStruct{log, ok}  // send reply back to client
+	*reply = log
 	return nil
 }
 
@@ -35,7 +36,7 @@ func openLogServer(port string) {
 		if err != nil {
 			log.Fatal("Accept error:", err)
 		}
-		rpc.ServeConn(conn) // provide RPC service
+		go rpc.ServeConn(conn) // provide RPC service
 	}
 }
 
