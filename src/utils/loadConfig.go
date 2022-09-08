@@ -15,7 +15,7 @@ type Server struct {
 
 func getConfigs() string {
 
-	b, err := ioutil.ReadFile("../../config.json") // pass the file name
+	b, err := ioutil.ReadFile("../config.json") // pass the file name
 
 	if err != nil {
 		fmt.Print(err)
