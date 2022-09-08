@@ -15,7 +15,7 @@ type ipAddress struct {
 	name    string
 }
 
-type replyStruct struct {
+type ReplyStruct struct {
 	log string
 	ok  bool
 }
@@ -54,7 +54,7 @@ func main() {
 				return
 			}
 
-			var reply replyStruct
+			var reply ReplyStruct
 			err = client.Call("grepLogService.GrepLog", "grep -Ec log "+server.FilePath+" "+server.Name+".log: ", &reply) // RPC
 			if err != nil {
 				handleError(err, c, &wg, server)
