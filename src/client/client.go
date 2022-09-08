@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/rpc"
 	"os"
+	"strconv"
 	"sync"
 	"utils"
 )
@@ -12,6 +13,11 @@ import (
 type ipAddress struct {
 	address string
 	name    string
+}
+
+type replyStruct struct {
+	log string
+	ok  bool
 }
 
 // check wheter 'filename' file exists
@@ -34,8 +40,12 @@ func main() {
 	c := make(chan string) // use chanel to send logs safely
 	servers := utils.LoadConfig()
 
+	totalSuccessNum := 0
+	totalMatch := 0
 	for _, server := range servers {
-		wg.Add(1) // add one when set a new task
+		wg.Add(1)       // add one when set a new task
+		defer wg.Done() // minus one when finish a task
+
 		// use goutine to execute concurrently
 		go func(server utils.Server) { // connect to one server and try to execute RPC on that server
 			client, err := rpc.Dial("tcp", server.IpAddr+":"+server.Port) // set connection
@@ -44,15 +54,21 @@ func main() {
 				return
 			}
 
-			var reply string
+			var reply replyStruct
 			err = client.Call("grepLogService.GrepLog", "grep -Ec log "+server.FilePath+" "+server.Name+".log: ", &reply) // RPC
 			if err != nil {
 				handleError(err, c, &wg, server)
 				return
 			}
-			c <- reply // use channel send logs back
-
-			wg.Done() // minus one when finish a task
+			c <- server.Name + ": " + reply.log // use channel send logs back
+			if reply.ok {
+				totalSuccessNum += 1
+				match, err := strconv.Atoi(reply.log)
+				if err != nil {
+				} else {
+					totalMatch += match
+				}
+			}
 		}(server)
 	}
 
@@ -75,4 +91,6 @@ func main() {
 			panic(err1)
 		}
 	}
+	io.WriteString(f, "match number: "+string(totalMatch))
+	io.WriteString(f, "numer of successful log queries: "+string(totalSuccessNum))
 }
