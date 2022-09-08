@@ -24,7 +24,6 @@ func (p *grepLogService) GrepLog(request string, reply *string) error {
 	jsonData, _ := json.Marshal(data)
 	str := string(jsonData)
 	reply = &str
-	fmt.Println(reply)
 
 	return nil
 }

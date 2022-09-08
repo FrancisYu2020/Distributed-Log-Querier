@@ -51,7 +51,7 @@ func main() {
 				return
 			}
 
-			var reply *string
+			var reply string
 			command := "grep -Ec log " + server.FilePath + " " + server.Name + ".log: "
 			err = client.Call("grepLogService.GrepLog", &command, &reply) // RPC
 			if err != nil {
@@ -60,7 +60,7 @@ func main() {
 			}
 
 			var message replyStruct
-			json.Unmarshal([]byte(*reply), &message)
+			json.Unmarshal([]byte(reply), &message)
 			fmt.Println(message)
 
 			c <- server.Name + ": " + message.Log // use channel send logs back
