@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/rpc"
@@ -60,6 +61,7 @@ func main() {
 
 			var message replyStruct
 			json.Unmarshal([]byte(*reply), &message)
+			fmt.Println(message)
 
 			c <- server.Name + ": " + message.Log // use channel send logs back
 			if message.Ok {
