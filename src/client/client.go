@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/rpc"
@@ -52,15 +53,15 @@ func main() {
 
 			var reply string
 			command := "grep -Ec log " + server.FilePath + " " + server.Name + ".log: "
-			err = client.Call("grepLogService.GrepLog", &command, &reply) // RPC
+			err = client.Call("grepLogService.GrepLog", command, reply) // RPC
 			if err != nil {
 				handleError(err, c, &wg, server)
 				return
 			}
-			// fmt.Println(reply)
+			fmt.Println(reply)
 			var message replyStruct
 			json.Unmarshal([]byte(reply), &message)
-			// fmt.Println(message)
+			fmt.Println(message)
 
 			c <- server.Name + ": " + message.Log + "\n" // use channel send logs back
 			if message.Ok {
