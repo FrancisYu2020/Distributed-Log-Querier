@@ -10,16 +10,11 @@ import (
 
 type grepLogService struct{}
 
-type ReplyStruct struct {
-	log string
-	ok  bool
-}
-
-func (p *grepLogService) GrepLog(request string, reply *ReplyStruct) error {
+func (p *grepLogService) GrepLog(request string, reply *utils.ReplyStruct) error {
 	fmt.Printf("grep command：%v\n", request) // print the request command
 
-	log, ok := utils.Grep(request) // get the log query results
-	*reply = ReplyStruct{log, ok}  // send reply back to client
+	log, ok := utils.Grep(request)      // get the log query results
+	*reply = utils.ReplyStruct{log, ok} // send reply back to client
 	return nil
 }
 

@@ -15,11 +15,6 @@ type ipAddress struct {
 	name    string
 }
 
-type ReplyStruct struct {
-	log string
-	ok  bool
-}
-
 // check wheter 'filename' file exists
 func checkFileIsExist(filename string) bool {
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
@@ -54,7 +49,7 @@ func main() {
 				return
 			}
 
-			var reply ReplyStruct
+			var reply utils.ReplyStruct
 			err = client.Call("grepLogService.GrepLog", "grep -Ec log "+server.FilePath+" "+server.Name+".log: ", &reply) // RPC
 			if err != nil {
 				handleError(err, c, &wg, server)
