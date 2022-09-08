@@ -3,10 +3,10 @@ package main
 import (
 	"io"
 	"log"
-	"mp1-hangy6-tian23/src/utils"
 	"net/rpc"
 	"os"
 	"sync"
+	"utils"
 )
 
 type ipAddress struct {
