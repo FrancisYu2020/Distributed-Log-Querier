@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+	"encoding/gob"
 	"io"
 	"log"
 	"net/rpc"
@@ -10,9 +12,9 @@ import (
 	"utils"
 )
 
-type ipAddress struct {
-	address string
-	name    string
+type replyStruct struct {
+	log string
+	ok  bool
 }
 
 // check wheter 'filename' file exists
@@ -49,17 +51,22 @@ func main() {
 				return
 			}
 
-			var reply utils.ReplyStruct
+			var reply *bytes.Buffer
 			command := "grep -Ec log " + server.FilePath + " " + server.Name + ".log: "
 			err = client.Call("grepLogService.GrepLog", &command, &reply) // RPC
 			if err != nil {
 				handleError(err, c, &wg, server)
 				return
 			}
-			c <- server.Name + ": " + reply.Log // use channel send logs back
-			if reply.Ok {
+
+			var message replyStruct
+			dec := gob.NewDecoder(reply)
+			dec.Decode(&message)
+
+			c <- server.Name + ": " + message.log // use channel send logs back
+			if message.ok {
 				totalSuccessNum += 1
-				match, err := strconv.Atoi(reply.Log)
+				match, err := strconv.Atoi(message.log)
 				if err != nil {
 				} else {
 					totalMatch += match
