@@ -35,7 +35,7 @@ func openLogServer(port string) {
 		if err != nil {
 			log.Fatal("Accept error:", err)
 		}
-		go rpc.ServeConn(conn) // provide RPC service
+		rpc.ServeConn(conn) // provide RPC service
 	}
 }
 
