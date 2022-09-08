@@ -18,7 +18,7 @@ type replyStruct struct {
 func (p *grepLogService) GrepLog(request string, reply *string) error {
 	fmt.Printf("grep command：%v\n", request) // print the request command
 
-	log, ok := utils.Grep(request) // get the log query results
+	log := utils.Grep(request) // get the log query results
 	// *reply = replyStruct{log, ok}  // send reply back to client
 	*reply = log
 	return nil
