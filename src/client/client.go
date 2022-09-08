@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/rpc"
 	"os"
+	"strconv"
 	"sync"
 	"utils"
 )
@@ -53,21 +54,21 @@ func main() {
 				return
 			}
 
-			var reply string
+			var reply replyStruct
 			err = client.Call("grepLogService.GrepLog", "grep -Ec log "+server.FilePath+" "+server.Name+".log: ", &reply) // RPC
 			if err != nil {
 				handleError(err, c, &wg, server)
 				return
 			}
-			c <- server.Name + ": " + reply // use channel send logs back
-			// if reply.ok {
-			// 	totalSuccessNum += 1
-			// 	match, err := strconv.Atoi(reply.log)
-			// 	if err != nil {
-			// 	} else {
-			// 		totalMatch += match
-			// 	}
-			// }
+			c <- server.Name + ": " + reply.log // use channel send logs back
+			if reply.ok {
+				totalSuccessNum += 1
+				match, err := strconv.Atoi(reply.log)
+				if err != nil {
+				} else {
+					totalMatch += match
+				}
+			}
 		}(server)
 	}
 
