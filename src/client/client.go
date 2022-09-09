@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"log"
 	"net/rpc"
@@ -58,12 +57,11 @@ func main() {
 				handleError(err, c, &wg, server)
 				return
 			}
-			fmt.Println(reply)
+
 			var message replyStruct
 			json.Unmarshal([]byte(reply), &message)
-			fmt.Println(message)
 
-			c <- server.Name + ": " + message.Log + "\n" // use channel send logs back
+			c <- server.Name + ": " + message.Log // use channel send logs back
 			if message.Ok {
 				totalSuccessNum += 1
 				match, err := strconv.Atoi(message.Log)
