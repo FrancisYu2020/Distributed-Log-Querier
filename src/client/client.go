@@ -64,7 +64,7 @@ func main() {
 			c <- server.Name + ": " + message.Log // use channel send logs back
 			if message.Ok {
 				*totalSuccessNum += 1
-				match, err := strconv.Atoi(message.Log)
+				match, err := strconv.Atoi(message.Log[:len(message.Log)-1])
 				if err != nil {
 				} else {
 					*totalMatch += match
