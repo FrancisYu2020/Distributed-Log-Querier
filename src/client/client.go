@@ -38,7 +38,7 @@ func main() {
 
 	fmt.Println("Please enter the query...")
 	var query string
-	fmt.Scanf("%s", query)
+	fmt.Scanf("%s", &query)
 
 	totalSuccessNum := 0
 	totalMatch := 0
