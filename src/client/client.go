@@ -92,11 +92,11 @@ func main() {
 			panic(err1)
 		}
 	}
-	_, err1 = io.WriteString(f, "match number: "+string(totalMatch)+"\n")
+	_, err1 = io.WriteString(f, "match number: "+strconv.Itoa(totalMatch)+"\n")
 	if err1 != nil {
 		panic(err1)
 	}
-	_, err1 = io.WriteString(f, "numer of successful log queries: "+string(totalSuccessNum)+"\n")
+	_, err1 = io.WriteString(f, "numer of successful log queries: "+strconv.Itoa(totalSuccessNum)+"\n")
 	if err1 != nil {
 		panic(err1)
 	}
