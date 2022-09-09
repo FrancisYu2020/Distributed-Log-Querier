@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -37,8 +38,10 @@ func main() {
 	servers := utils.LoadConfig()
 
 	fmt.Println("Please enter the query...")
-	var query string
-	fmt.Scanf("%s", &query)
+
+	reader := bufio.NewReader(os.Stdin)
+	bytes, _, _ := reader.ReadLine()
+	query := string(bytes)
 
 	totalSuccessNum := 0
 	totalMatch := 0
