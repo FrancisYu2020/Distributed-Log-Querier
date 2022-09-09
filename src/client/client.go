@@ -36,13 +36,17 @@ func main() {
 	c := make(chan string) // use chanel to send logs safely
 	servers := utils.LoadConfig()
 
+	fmt.Println("Please enter the query...")
+	var query string
+	fmt.Scanf("%s", query)
+
 	totalSuccessNum := 0
 	totalMatch := 0
+	fmt.Println("Querying log...")
 	for _, server := range servers {
 		wg.Add(1) // add one when set a new task
-		fmt.Println("Querying Log...")
 		// use goutine to execute concurrently
-		go func(server utils.Server, totalSuccessNum, totalMatch *int) { // connect to one server and try to execute RPC on that server
+		go func(server utils.Server, totalSuccessNum, totalMatch *int, query string) { // connect to one server and try to execute RPC on that server
 			defer wg.Done()                                               // minus one when finish a task
 			client, err := rpc.Dial("tcp", server.IpAddr+":"+server.Port) // set connection
 			if err != nil {
@@ -51,7 +55,7 @@ func main() {
 			}
 
 			var reply string
-			command := "grep -Ec log " + server.FilePath + " " + server.Name + ".log: "
+			command := query + " " + server.FilePath + " " + server.Name + ".log: "
 			err = client.Call("grepLogService.GrepLog", command, &reply) // RPC
 			if err != nil {
 				handleError(err, c, &wg, server)
@@ -70,7 +74,7 @@ func main() {
 					*totalMatch += match
 				}
 			}
-		}(server, &totalSuccessNum, &totalMatch)
+		}(server, &totalSuccessNum, &totalMatch, query)
 	}
 
 	var filename = "./test.txt" // path of the log file
@@ -101,4 +105,5 @@ func main() {
 		panic(err1)
 	}
 	fmt.Println("All tasks done!")
+	fmt.Println("Please see log.txt for results.")
 }
