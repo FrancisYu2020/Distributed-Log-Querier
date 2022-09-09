@@ -43,7 +43,7 @@ func main() {
 		defer wg.Done() // minus one when finish a task
 
 		// use goutine to execute concurrently
-		go func(server utils.Server) { // connect to one server and try to execute RPC on that server
+		go func(server utils.Server, totalSuccessNum, totalMatch *int) { // connect to one server and try to execute RPC on that server
 			client, err := rpc.Dial("tcp", server.IpAddr+":"+server.Port) // set connection
 			if err != nil {
 				handleError(err, c, &wg, server)
@@ -63,14 +63,14 @@ func main() {
 
 			c <- server.Name + ": " + message.Log // use channel send logs back
 			if message.Ok {
-				totalSuccessNum += 1
+				*totalSuccessNum += 1
 				match, err := strconv.Atoi(message.Log)
 				if err != nil {
 				} else {
-					totalMatch += match
+					*totalMatch += match
 				}
 			}
-		}(server)
+		}(server, &totalSuccessNum, &totalMatch)
 	}
 
 	var filename = "./test.txt" // path of the log file
