@@ -25,7 +25,6 @@ func checkFileIsExist(filename string) bool {
 }
 
 func handleError(err error, c chan string, wg *sync.WaitGroup, server utils.Server) {
-	defer wg.Done()
 	c <- string(server.Name + ".log: " + err.Error() + "\n")
 }
 
