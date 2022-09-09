@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/rpc"
@@ -39,7 +40,7 @@ func main() {
 	totalMatch := 0
 	for _, server := range servers {
 		wg.Add(1) // add one when set a new task
-
+		fmt.Println("Querying Log...")
 		// use goutine to execute concurrently
 		go func(server utils.Server, totalSuccessNum, totalMatch *int) { // connect to one server and try to execute RPC on that server
 			defer wg.Done()                                               // minus one when finish a task
@@ -91,7 +92,7 @@ func main() {
 			panic(err1)
 		}
 	}
-	_, err1 = io.WriteString(f, "match number: "+strconv.Itoa(totalMatch)+"\n")
+	_, err1 = io.WriteString(f, "total match number: "+strconv.Itoa(totalMatch)+"\n")
 	if err1 != nil {
 		panic(err1)
 	}
@@ -99,4 +100,5 @@ func main() {
 	if err1 != nil {
 		panic(err1)
 	}
+	fmt.Println("All tasks done!")
 }
