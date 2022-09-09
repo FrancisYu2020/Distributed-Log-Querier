@@ -39,11 +39,11 @@ func main() {
 	totalSuccessNum := 0
 	totalMatch := 0
 	for _, server := range servers {
-		wg.Add(1)       // add one when set a new task
-		defer wg.Done() // minus one when finish a task
+		wg.Add(1) // add one when set a new task
 
 		// use goutine to execute concurrently
 		go func(server utils.Server, totalSuccessNum, totalMatch *int) { // connect to one server and try to execute RPC on that server
+			defer wg.Done()                                               // minus one when finish a task
 			client, err := rpc.Dial("tcp", server.IpAddr+":"+server.Port) // set connection
 			if err != nil {
 				handleError(err, c, &wg, server)
