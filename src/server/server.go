@@ -23,6 +23,7 @@ func (p *grepLogService) GrepLog(request string, reply *string) error {
 	data := replyStruct{log, ok}
 	jsonData, _ := json.Marshal(data)
 	str := string(jsonData)
+	fmt.Println(str)
 	*reply = str
 
 	return nil
