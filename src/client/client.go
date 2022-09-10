@@ -81,7 +81,6 @@ func ClientMain() {
 
 	c := make(chan string) // use chanel to send logs safely
 	servers := utils.LoadConfig()
-	fmt.Println(servers)
 
 	fmt.Println("Please enter the query...")
 
@@ -98,7 +97,6 @@ func ClientMain() {
 		go func(server utils.Server, totalSuccessNum, totalMatch *int, query string) { // connect to one server and try to execute RPC on that server
 			defer wg.Done()                                               // minus one when finish a task
 			client, err := rpc.Dial("tcp", server.IpAddr+":"+server.Port) // set connection
-			fmt.Println(client, "  ||  ", err)
 			if err != nil {
 				handleError(err, c, &wg, server)
 				return
