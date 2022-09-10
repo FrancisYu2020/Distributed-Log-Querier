@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"encoding/json"
@@ -6,7 +6,7 @@ import (
 	"log"
 	"net"
 	"net/rpc"
-	"utils"
+	utils "src/utils"
 )
 
 type replyStruct struct {
@@ -44,6 +44,6 @@ func openLogServer(port string) {
 	}
 }
 
-func main() {
+func ServerMain() {
 	openLogServer(":1234") // open server and keep listening at port 1234
 }

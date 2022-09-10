@@ -1,4 +1,4 @@
-package main
+package client
 
 import (
 	"bufio"
@@ -11,7 +11,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	"utils"
+	utils "src/utils"
 )
 
 type replyStruct struct {
@@ -70,7 +70,7 @@ func handleError(err error, c chan string, wg *sync.WaitGroup, server utils.Serv
 	c <- string(server.Name + ".log: " + err.Error() + "\n")
 }
 
-func main() {
+func ClientMain() {
 	var wg sync.WaitGroup // use wait group to keep synchronization
 	defer wg.Wait()
 
