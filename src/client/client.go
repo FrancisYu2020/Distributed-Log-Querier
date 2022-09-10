@@ -27,7 +27,7 @@ func checkFileIsExist(filename string) bool {
 	return true
 }
 
-func writeFile(filename string, c chan string, taskNum int, totalMatch int, totalSuccessNum int) {
+func writeFile(filename string, c chan string, taskNum int, totalMatch *int, totalSuccessNum *int) {
 	var f *os.File
 	var err1 error
 	if checkFileIsExist(filename) { // if file exists
@@ -46,11 +46,11 @@ func writeFile(filename string, c chan string, taskNum int, totalMatch int, tota
 			panic(err1)
 		}
 	}
-	_, err1 = io.WriteString(f, "total match number: "+strconv.Itoa(totalMatch)+"\n")
+	_, err1 = io.WriteString(f, "total match number: "+strconv.Itoa(*totalMatch)+"\n")
 	if err1 != nil {
 		panic(err1)
 	}
-	_, err1 = io.WriteString(f, "number of successful log queries: "+strconv.Itoa(totalSuccessNum)+"\n")
+	_, err1 = io.WriteString(f, "number of successful log queries: "+strconv.Itoa(*totalSuccessNum)+"\n")
 	if err1 != nil {
 		panic(err1)
 	}
@@ -58,12 +58,12 @@ func writeFile(filename string, c chan string, taskNum int, totalMatch int, tota
 	fmt.Println("Please see log.txt for results.")
 }
 
-func printQueryResult(taskNum int, c chan string, totalMatch int, totalSuccessNum int) {
+func printQueryResult(taskNum int, c chan string, totalMatch *int, totalSuccessNum *int) {
 	for i := 0; i < taskNum; i++ {
-		fmt.Println(<-c) // output the results
+		fmt.Print(<-c) // output the results
 	}
-	fmt.Println("total match number: " + strconv.Itoa(totalMatch))
-	fmt.Println("number of successful log queries: " + strconv.Itoa(totalSuccessNum))
+	fmt.Println("total match number: " + strconv.Itoa(*totalMatch))
+	fmt.Println("number of successful log queries: " + strconv.Itoa(*totalSuccessNum))
 }
 
 func handleError(err error, c chan string, wg *sync.WaitGroup, server utils.Server) {
@@ -122,9 +122,9 @@ func main() {
 
 	queryParmas := strings.Split(query, " ")
 	if len(queryParmas) == 4 { // grep -Ec [regex] *.log
-		printQueryResult(len(servers), c, totalMatch, totalSuccessNum)
+		printQueryResult(len(servers), c, &totalMatch, &totalSuccessNum)
 	} else if len(queryParmas) == 5 { // grep -Ec [regex] *.log [output path]
 		var filename = queryParmas[4] // path of the log file
-		writeFile(filename, c, len(servers), totalMatch, totalSuccessNum)
+		writeFile(filename, c, len(servers), &totalMatch, &totalSuccessNum)
 	}
 }
