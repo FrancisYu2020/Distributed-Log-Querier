@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"bytes"
 	"os/exec"
 	"strings"
 )
@@ -16,9 +17,10 @@ func Grep(command string) (string, bool) {
 		cmd = exec.Command(params[0], params[1], params[2], params[5]+params[3])
 	}
 
-	data, err := cmd.CombinedOutput() // get the result
-	if err != nil {                   // handle error
-		return "command error: " + err.Error() + "\n", false
+	var stdout, stderr bytes.Buffer
+	err := cmd.Run() // get the result
+	if err != nil {  // handle error
+		return "command error: " + stderr.String() + "\n", false
 	}
-	return string(data), true
+	return stdout.String(), true
 }
