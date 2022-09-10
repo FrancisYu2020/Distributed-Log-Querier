@@ -16,6 +16,9 @@ type replyStruct struct {
 
 type grepLogService struct{}
 
+// Outer method wrappers
+func OpenLogServer(port string) { openLogServer(port) }
+
 func (p *grepLogService) GrepLog(request string, reply *string) error {
 	fmt.Printf("grep command：%v\n", request) // print the request command
 

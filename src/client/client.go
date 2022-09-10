@@ -19,6 +19,11 @@ type replyStruct struct {
 	Ok  bool   `json:ok`
 }
 
+// Outer method wrappers
+func CheckFileIsExist(filename string) bool { return checkFileIsExist(filename) }
+func WriteFile(filename string, c chan string, taskNum int, totalMatch *int, totalSuccessNum *int) { writeFile(filename, c, taskNum,totalMatch, totalSuccessNum) }
+func PrintQueryResult(taskNum int, c chan string, totalMatch *int, totalSuccessNum *int) { printQueryResult(taskNum, c, totalMatch, totalSuccessNum) }
+
 // check wheter 'filename' file exists
 func checkFileIsExist(filename string) bool {
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
@@ -76,7 +81,7 @@ func ClientMain() {
 
 	c := make(chan string) // use chanel to send logs safely
 	servers := utils.LoadConfig()
-	// fmt.Println(servers)
+	fmt.Println(servers)
 
 	fmt.Println("Please enter the query...")
 
@@ -95,23 +100,18 @@ func ClientMain() {
 			client, err := rpc.Dial("tcp", server.IpAddr+":"+server.Port) // set connection
 			fmt.Println(client, "  ||  ", err)
 			if err != nil {
-				handleError(err, c, &wg, server) // TODO: fix the bug inside handleError
-				// fmt.Println("error handled in if statement")
+				handleError(err, c, &wg, server)
 				return
 			}
-			// fmt.Println("debug: error handled")
 
 			var reply string
 			command := query + " " + server.FilePath
-			// fmt.Println("debug0 ", command)
 			err = client.Call("grepLogService.GrepLog", command, &reply) // RPC
-			// fmt.Println("debug1.5 ", command)
 			if err != nil {
 				handleError(err, c, &wg, server)
 				return
 			}
 
-			// fmt.Println("debug1 ", command)
 
 			var message replyStruct
 			json.Unmarshal([]byte(reply), &message)
