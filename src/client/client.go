@@ -67,7 +67,10 @@ func printQueryResult(taskNum int, c chan string, totalMatch *int, totalSuccessN
 }
 
 func handleError(err error, c chan string, wg *sync.WaitGroup, server utils.Server) {
+	fmt.Println("father fucker")
+	wg.Done()
 	c <- string(server.Name + ".log: " + err.Error() + "\n")
+	fmt.Println("not suspended", c)
 }
 
 func ClientMain() {
@@ -76,6 +79,7 @@ func ClientMain() {
 
 	c := make(chan string) // use chanel to send logs safely
 	servers := utils.LoadConfig()
+	fmt.Println(servers)
 
 	fmt.Println("Please enter the query...")
 
@@ -92,18 +96,26 @@ func ClientMain() {
 		go func(server utils.Server, totalSuccessNum, totalMatch *int, query string) { // connect to one server and try to execute RPC on that server
 			defer wg.Done()                                               // minus one when finish a task
 			client, err := rpc.Dial("tcp", server.IpAddr+":"+server.Port) // set connection
+			fmt.Println(client, "  ||  ", err)
+			if err != nil {
+				fmt.Println("mother fucker")
+				handleError(err, c, &wg, server) // TODO: fix the bug inside handleError
+				fmt.Println("error handled in if statement")
+				return
+			}
+			fmt.Println("debug: error handled")
+
+			var reply string
+			command := query + " " + server.FilePath
+			fmt.Println("debug0 ", command)
+			err = client.Call("grepLogService.GrepLog", command, &reply) // RPC
+			fmt.Println("debug1.5 ", command)
 			if err != nil {
 				handleError(err, c, &wg, server)
 				return
 			}
 
-			var reply string
-			command := query + " " + server.FilePath
-			err = client.Call("grepLogService.GrepLog", command, &reply) // RPC
-			if err != nil {
-				handleError(err, c, &wg, server)
-				return
-			}
+			fmt.Println("debug1 ", command)
 
 			var message replyStruct
 			json.Unmarshal([]byte(reply), &message)
