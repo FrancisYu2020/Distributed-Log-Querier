@@ -20,9 +20,9 @@ func Grep(command string) (string, bool) {
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
-	err := cmd.Run() // get the result
-	if err != nil {  // handle error
-		return "command error: " + stderr.String() + "\n", false
+	err := cmd.Run()                                              // get the result
+	if err != nil && strings.Compare(stdout.String(), "0") != 1 { // handle error
+		return "command error: " + stderr.String(), false
 	}
 	return stdout.String(), true
 }
