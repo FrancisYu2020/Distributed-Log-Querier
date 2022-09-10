@@ -2,59 +2,59 @@
   "ipaddr": "fa22-cs425-2201.cs.illinois.edu",
   "name" : "VM.01",
   "port" : "1234",
-  "filePath" : "../src/test_logs/"
+  "filePath" : "../../test_logs/"
 },
 {
   "ipaddr": "fa22-cs425-2202.cs.illinois.edu",
   "name" : "VM.02",
   "port" : "1234",
-  "filePath" : "../src/test_logs/"
+  "filePath" : "../../test_logs/"
 },
 {
   "ipaddr": "fa22-cs425-2203.cs.illinois.edu",
   "name" : "VM.03",
   "port" : "1234",
-  "filePath" : "../src/test_logs/"
+  "filePath" : "../../test_logs/"
 },
 {
   "ipaddr": "fa22-cs425-2204.cs.illinois.edu",
   "name" : "VM.04",
   "port" : "1234",
-  "filePath" : "../src/test_logs/"
+  "filePath" : "../../test_logs/"
 },
 {
   "ipaddr": "fa22-cs425-2205.cs.illinois.edu",
   "name" : "VM.05",
   "port" : "1234",
-  "filePath" : "../src/test_logs/"
+  "filePath" : "../../test_logs/"
 },
 {
   "ipaddr": "fa22-cs425-2206.cs.illinois.edu",
   "name" : "VM.06",
   "port" : "1234",
-  "filePath" : "../src/test_logs/"
+  "filePath" : "../../test_logs/"
 },
 {
   "ipaddr": "fa22-cs425-2207.cs.illinois.edu",
   "name" : "VM.07",
   "port" : "1234",
-  "filePath" : "../src/test_logs/"
+  "filePath" : "../../test_logs/"
 },
 {
   "ipaddr": "fa22-cs425-2208.cs.illinois.edu",
   "name" : "VM.08",
   "port" : "1234",
-  "filePath" : "../src/test_logs/"
+  "filePath" : "../../test_logs/"
 },
 {
   "ipaddr": "fa22-cs425-2209.cs.illinois.edu",
   "name" : "VM.09",
   "port" : "1234",
-  "filePath" : "../src/test_logs/"
+  "filePath" : "../../test_logs/"
 },
 {
   "ipaddr": "fa22-cs425-2210.cs.illinois.edu",
   "name" : "VM.10",
   "port" : "1234",
-  "filePath" : "../src/test_logs/"
+  "filePath" : "../../test_logs/"
 }]

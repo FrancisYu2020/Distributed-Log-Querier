@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"encoding/json"
@@ -6,7 +6,7 @@ import (
 	"log"
 	"net"
 	"net/rpc"
-	"utils"
+	utils "src/utils"
 )
 
 type replyStruct struct {
@@ -15,6 +15,9 @@ type replyStruct struct {
 }
 
 type grepLogService struct{}
+
+// Outer method wrappers
+func OpenLogServer(port string) { openLogServer(port) }
 
 func (p *grepLogService) GrepLog(request string, reply *string) error {
 	fmt.Printf("grep command：%v\n", request) // print the request command
@@ -44,6 +47,6 @@ func openLogServer(port string) {
 	}
 }
 
-func main() {
+func ServerMain() {
 	openLogServer(":1234") // open server and keep listening at port 1234
 }
