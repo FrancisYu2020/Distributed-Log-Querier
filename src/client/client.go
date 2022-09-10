@@ -9,6 +9,7 @@ import (
 	"net/rpc"
 	"os"
 	"strconv"
+	"strings"
 	"sync"
 	"utils"
 )
@@ -24,6 +25,45 @@ func checkFileIsExist(filename string) bool {
 		return false
 	}
 	return true
+}
+
+func writeFile(filename string, c chan string, taskNum int, totalMatch int, totalSuccessNum int) {
+	var f *os.File
+	var err1 error
+	if checkFileIsExist(filename) { // if file exists
+		err1 = os.Remove(filename) // remove this file
+	}
+	f, err1 = os.Create(filename) // if file not exists, create the file
+
+	if err1 != nil {
+		log.Fatal(err1)
+	}
+
+	defer f.Close()
+	for i := 0; i < taskNum; i++ {
+		_, err1 := io.WriteString(f, <-c) // write logs to the file
+		if err1 != nil {
+			panic(err1)
+		}
+	}
+	_, err1 = io.WriteString(f, "total match number: "+strconv.Itoa(totalMatch)+"\n")
+	if err1 != nil {
+		panic(err1)
+	}
+	_, err1 = io.WriteString(f, "number of successful log queries: "+strconv.Itoa(totalSuccessNum)+"\n")
+	if err1 != nil {
+		panic(err1)
+	}
+	fmt.Println("All tasks done!")
+	fmt.Println("Please see log.txt for results.")
+}
+
+func printQueryResult(taskNum int, c chan string, totalMatch int, totalSuccessNum int) {
+	for i := 0; i < taskNum; i++ {
+		fmt.Println(<-c) // output the results
+	}
+	fmt.Println("total match number: " + strconv.Itoa(totalMatch))
+	fmt.Println("number of successful log queries: " + strconv.Itoa(totalSuccessNum))
 }
 
 func handleError(err error, c chan string, wg *sync.WaitGroup, server utils.Server) {
@@ -58,7 +98,7 @@ func main() {
 			}
 
 			var reply string
-			command := query + " " + server.FilePath + " " + server.Name + ".log: "
+			command := query + " " + server.FilePath
 			err = client.Call("grepLogService.GrepLog", command, &reply) // RPC
 			if err != nil {
 				handleError(err, c, &wg, server)
@@ -80,33 +120,11 @@ func main() {
 		}(server, &totalSuccessNum, &totalMatch, query)
 	}
 
-	var filename = "./test.txt" // path of the log file
-	var f *os.File
-	var err1 error
-	if checkFileIsExist(filename) { // if file exists
-		err1 = os.Remove(filename) // remove this file
+	queryParmas := strings.Split(query, " ")
+	if len(queryParmas) == 4 { // grep -Ec [regex] *.log
+		printQueryResult(len(servers), c, totalMatch, totalSuccessNum)
+	} else if len(queryParmas) == 5 { // grep -Ec [regex] *.log [output path]
+		var filename = queryParmas[4] // path of the log file
+		writeFile(filename, c, len(servers), totalMatch, totalSuccessNum)
 	}
-	f, err1 = os.Create(filename) // if file not exists, create the file
-
-	if err1 != nil {
-		log.Fatal(err1)
-	}
-
-	defer f.Close()
-	for i := 0; i < len(servers); i++ {
-		_, err1 := io.WriteString(f, <-c) // write logs to the file
-		if err1 != nil {
-			panic(err1)
-		}
-	}
-	_, err1 = io.WriteString(f, "total match number: "+strconv.Itoa(totalMatch)+"\n")
-	if err1 != nil {
-		panic(err1)
-	}
-	_, err1 = io.WriteString(f, "numer of successful log queries: "+strconv.Itoa(totalSuccessNum)+"\n")
-	if err1 != nil {
-		panic(err1)
-	}
-	fmt.Println("All tasks done!")
-	fmt.Println("Please see log.txt for results.")
 }
