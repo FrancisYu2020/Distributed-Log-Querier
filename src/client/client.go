@@ -55,7 +55,7 @@ func writeFile(filename string, c chan string, taskNum int, totalMatch *int, tot
 		panic(err1)
 	}
 	fmt.Println("All tasks done!")
-	fmt.Println("Please see log.txt for results.")
+	fmt.Println("Please see " + filename + " for results.")
 }
 
 func printQueryResult(taskNum int, c chan string, totalMatch *int, totalSuccessNum *int) {

@@ -18,7 +18,7 @@ func Grep(command string) (string, bool) {
 
 	data, err := cmd.CombinedOutput() // get the result
 	if err != nil {                   // handle error
-		return "failed to call command: " + err.Error(), false
+		return "command error: " + err.Error() + "\n", false
 	}
 	return string(data), true
 }
