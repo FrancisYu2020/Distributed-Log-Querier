@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for val in {1..9}
+for val in {1..2}
 do
     echo VM$val Starting
     ssh tian23@fa22-cs425-220$val.cs.illinois.edu "cd /home/tian23/mp1-hangy6-tian23/bin/; nohup ./server>/dev/null 2>&1&"
