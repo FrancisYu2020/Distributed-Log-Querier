@@ -45,6 +45,8 @@ To run server program on a machine, please use following command:
 bin/server
 ```
 
+You can use config.json to configure the machines you want to query log from.
+
 To run client program on a machine, please use following command:
 
 ```
@@ -67,6 +69,7 @@ Here for [options] we have:
 
 
 If you want to run server on multiple machines at the same time, you can use the run_all_server.sh at src/scripts/ but please make slight change for your ipaddress.
+
 
 ## Tests
 To run unit test, please use following command to run the corresponding script:
