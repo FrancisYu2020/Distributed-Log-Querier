@@ -1,7 +1,7 @@
 package client
 
 import (
-	"bufio"
+	// "bufio"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -84,9 +84,8 @@ func ClientMain() {
 
 	fmt.Println("Please enter the query...")
 
-	reader := bufio.NewReader(os.Stdin)
-	bytes, _, _ := reader.ReadLine()
-	query := string(bytes)
+    argsWithoutProg := os.Args[1:]
+	query := strings.Join(argsWithoutProg, " ")
 
 	totalSuccessNum := 0
 	totalMatch := 0
