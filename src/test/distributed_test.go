@@ -1,4 +1,4 @@
-package localTest
+package distributedTest
 
 import (
 	"testing"

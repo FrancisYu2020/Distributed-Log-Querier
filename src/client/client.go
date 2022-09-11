@@ -85,6 +85,7 @@ func ClientMain() {
 	// fmt.Println("Please enter the query...")
 
     argsWithoutProg := os.Args[1:]
+	argsWithoutProg[2] = "\"" + argsWithoutProg[2] + "\""
 	query := strings.Join(argsWithoutProg, " ")
 
 	totalSuccessNum := 0
@@ -125,11 +126,18 @@ func ClientMain() {
 		}(server, &totalSuccessNum, &totalMatch, query)
 	}
 
-	queryParmas := strings.Split(query, " ")
-	if len(queryParmas) == 4 { // grep -Ec [regex] *.log
+	queryParams := strings.Split(query, "\"")
+	path_info := strings.Split(queryParams[2], " ")
+	path := make([]string, 0)
+	for _, info := range path_info {
+		if info != "" {
+			path = append(path, info)
+		}
+	}
+	if len(path) == 1 { // grep -Ec [regex] *.log
 		printQueryResult(len(servers), c, &totalMatch, &totalSuccessNum)
-	} else if len(queryParmas) == 5 { // grep -Ec [regex] *.log [output path]
-		var filename = queryParmas[4] // path of the log file
+	} else if len(path) == 2 { // grep -Ec [regex] *.log [output path]
+		var filename = path[0] // path of the log file
 		writeFile(filename, c, len(servers), &totalMatch, &totalSuccessNum)
 	}
 }
