@@ -17,7 +17,7 @@ https: git clone https://gitlab.engr.illinois.edu/hangy6/mp1-hangy6-tian23.git
 
 ## Build
 
-To build the client and server programs easily, please follow the commands below:
+To build the client and server programs local easily, you can use the bash scripts, please follow the commands below:
 
 ```
 cd src/scripts/
