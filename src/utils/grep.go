@@ -10,7 +10,6 @@ import (
 // get the command and execute it by command line, return the grep result
 func Grep(command string) (string, bool) {
 	params := strings.Split(command, " ")
-	// fmt.Println(params, "-------------------------------------------")
 	var cmd *exec.Cmd
 	// execute the grep command
 	if len(params) == 5 { // grep -Ec [regex] *.log [log file path]

@@ -82,14 +82,14 @@ func ClientMain() {
 	c := make(chan string) // use chanel to send logs safely
 	servers := utils.LoadConfig()
 
-	fmt.Println("Please enter the query...")
+	// fmt.Println("Please enter the query...")
 
     argsWithoutProg := os.Args[1:]
 	query := strings.Join(argsWithoutProg, " ")
 
 	totalSuccessNum := 0
 	totalMatch := 0
-	fmt.Println("Querying log...")
+	// fmt.Println("Querying log...")
 	for _, server := range servers {
 		wg.Add(1) // add one when set a new task
 		// use goutine to execute concurrently
