@@ -8,13 +8,11 @@ A Go distributed log querier with concurrency and fault tolerance that allows yo
 
 You can clone this project to the machines you need to grep log from using following command:
 
-ssh:
 ```
-git clone git@gitlab.engr.illinois.edu:hangy6/mp1-hangy6-tian23.git
+ssh: git clone git@gitlab.engr.illinois.edu:hangy6/mp1-hangy6-tian23.git
 ```
-https:
 ```
-git clone https://gitlab.engr.illinois.edu/hangy6/mp1-hangy6-tian23.git
+https: git clone https://gitlab.engr.illinois.edu/hangy6/mp1-hangy6-tian23.git
 ``` 
 
 ## Build
