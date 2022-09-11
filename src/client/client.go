@@ -8,10 +8,10 @@ import (
 	"log"
 	"net/rpc"
 	"os"
+	utils "src/utils"
 	"strconv"
 	"strings"
 	"sync"
-	utils "src/utils"
 )
 
 type replyStruct struct {
@@ -21,8 +21,12 @@ type replyStruct struct {
 
 // Outer method wrappers
 func CheckFileIsExist(filename string) bool { return checkFileIsExist(filename) }
-func WriteFile(filename string, c chan string, taskNum int, totalMatch *int, totalSuccessNum *int) { writeFile(filename, c, taskNum,totalMatch, totalSuccessNum) }
-func PrintQueryResult(taskNum int, c chan string, totalMatch *int, totalSuccessNum *int) { printQueryResult(taskNum, c, totalMatch, totalSuccessNum) }
+func WriteFile(filename string, c chan string, taskNum int, totalMatch *int, totalSuccessNum *int) {
+	writeFile(filename, c, taskNum, totalMatch, totalSuccessNum)
+}
+func PrintQueryResult(taskNum int, c chan string, totalMatch *int, totalSuccessNum *int) {
+	printQueryResult(taskNum, c, totalMatch, totalSuccessNum)
+}
 
 // check wheter 'filename' file exists
 func checkFileIsExist(filename string) bool {
@@ -32,6 +36,7 @@ func checkFileIsExist(filename string) bool {
 	return true
 }
 
+// write query result to file
 func writeFile(filename string, c chan string, taskNum int, totalMatch *int, totalSuccessNum *int) {
 	var f *os.File
 	var err1 error
@@ -63,6 +68,7 @@ func writeFile(filename string, c chan string, taskNum int, totalMatch *int, tot
 	fmt.Println("Please see " + filename + " for results.")
 }
 
+// Output the query result
 func printQueryResult(taskNum int, c chan string, totalMatch *int, totalSuccessNum *int) {
 	for i := 0; i < taskNum; i++ {
 		fmt.Print(<-c) // output the results
@@ -71,6 +77,7 @@ func printQueryResult(taskNum int, c chan string, totalMatch *int, totalSuccessN
 	fmt.Println("number of successful log queries: " + strconv.Itoa(*totalSuccessNum))
 }
 
+// handle error by pushing error to channel
 func handleError(err error, c chan string, wg *sync.WaitGroup, server utils.Server) {
 	c <- string(server.Name + ".log: " + err.Error() + "\n")
 }
@@ -79,13 +86,13 @@ func ClientMain() {
 	var wg sync.WaitGroup // use wait group to keep synchronization
 	defer wg.Wait()
 
-	c := make(chan string) // use chanel to send logs safely
-	servers := utils.LoadConfig()
+	c := make(chan string)        // use chanel to send logs safely
+	servers := utils.LoadConfig() // load config to get the information of servers
 
 	fmt.Println("Please enter the query...")
 
 	reader := bufio.NewReader(os.Stdin)
-	bytes, _, _ := reader.ReadLine()
+	bytes, _, _ := reader.ReadLine() // get the input query
 	query := string(bytes)
 
 	totalSuccessNum := 0
@@ -104,23 +111,22 @@ func ClientMain() {
 
 			var reply string
 			command := query + " " + server.FilePath
-			err = client.Call("grepLogService.GrepLog", command, &reply) // RPC
+			err = client.Call("grepLogService.GrepLog", command, &reply) // use RPC to send command
 			if err != nil {
 				handleError(err, c, &wg, server)
 				return
 			}
 
-
 			var message replyStruct
-			json.Unmarshal([]byte(reply), &message)
+			json.Unmarshal([]byte(reply), &message) // unmarshal json data to struct
 
 			c <- server.Name + ": " + message.Log // use channel send logs back
 			if message.Ok {
-				*totalSuccessNum += 1
-				match, err := strconv.Atoi(message.Log[:len(message.Log)-1])
+				*totalSuccessNum += 1                                        // add one to successNum when execute a command successfully
+				match, err := strconv.Atoi(message.Log[:len(message.Log)-1]) // get the match number
 				if err != nil {
 				} else {
-					*totalMatch += match
+					*totalMatch += match // add the match number to totalMatch
 				}
 			}
 		}(server, &totalSuccessNum, &totalMatch, query)
@@ -128,9 +134,9 @@ func ClientMain() {
 
 	queryParmas := strings.Split(query, " ")
 	if len(queryParmas) == 4 { // grep -Ec [regex] *.log
-		printQueryResult(len(servers), c, &totalMatch, &totalSuccessNum)
+		printQueryResult(len(servers), c, &totalMatch, &totalSuccessNum) // output the result if no filepath parameter
 	} else if len(queryParmas) == 5 { // grep -Ec [regex] *.log [output path]
-		var filename = queryParmas[4] // path of the log file
-		writeFile(filename, c, len(servers), &totalMatch, &totalSuccessNum)
+		var filename = queryParmas[4]                                       // path of the log file
+		writeFile(filename, c, len(servers), &totalMatch, &totalSuccessNum) // write result to file
 	}
 }
