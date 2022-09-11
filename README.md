@@ -26,7 +26,7 @@ cd src/scripts/
 bash build.sh
 ```
 
-Or you can build the client and server program by yourself following the commands below:
+or you can build the client and server program by yourself following the commands below:
 
 ```
 cd src/
@@ -58,7 +58,9 @@ grep [options] [pattern] [log_name] [output_file_path](optional)
 ```
 
 Here for [options] we have:
+
 -c  counts the number of lines that contain matching pattern in a file and prints it or (output to specified file)
+
 -Ec counts the number of lines that contain matching pattern using regex in a file and prints it or (output to specified file)
 
 [output_file_path] is optional, if you input this, the result of grep command will be output to [output_file_path]
