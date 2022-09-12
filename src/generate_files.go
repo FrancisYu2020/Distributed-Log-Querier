@@ -78,9 +78,9 @@ func main() {
 	Init()
 
 	// we control the lines to be the same and change the frequency of the expression in our created files
-	GenerateFile(5, 100, "/home/hangy6/test_logs/low_freq.log") //create low frequency
-	GenerateFile(50, 100, "/home/hangy6/test_logs/medium_freq.log") //create medium frequency
-	GenerateFile(200, 100, "/home/hangy6/test_logs/high_freq.log") //create high frequency
+	GenerateFile(100, 1000000, "/home/hangy6/test_logs/low_freq.log") //create low frequency
+	GenerateFile(10000, 1000000, "/home/hangy6/test_logs/medium_freq.log") //create medium frequency
+	GenerateFile(10000000, 1000000, "/home/hangy6/test_logs/high_freq.log") //create high frequency
 	
 	// we control the frequency to be the same and compare between different file size
 	GenerateFile(3, 10, "/home/hangy6/test_logs/mini.log") //create mini file

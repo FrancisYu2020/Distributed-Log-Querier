@@ -90,7 +90,7 @@ func TestOneServerEmpty(t *testing.T) {
 
 func TestOneServerMini(t *testing.T) {
 	// Test query log from server on local machine
-	// Basic sanity check on client log collection. Check word "Hello" in log "small.log" on the local server
+	// Basic sanity check on client log collection. Check word "Hello" in log "mini.log" on the local server
 
 	// build the server
 	server_compile_cmd := exec.Command("go", "build", "-o", BIN_PATH_SERVER, SRC_PATH + "server_main.go")
@@ -233,7 +233,7 @@ func TestOneServerSmall(t *testing.T) {
 
 func TestOneServerMedium(t *testing.T) {
 	// Test query log from server on local machine
-	// Basic sanity check on client log collection. Check query expression in log "small.log" on the local server
+	// Basic sanity check on client log collection. Check query expression in log "medium.log" on the local server
 
 	// build the server
 	server_compile_cmd := exec.Command("go", "build", "-o", BIN_PATH_SERVER, SRC_PATH + "server_main.go")
@@ -305,7 +305,7 @@ func TestOneServerMedium(t *testing.T) {
 
 func TestOneServerLarge(t *testing.T) {
 	// Test query log from server on local machine
-	// Basic sanity check on client log collection. Check query expression in log "small.log" on the local server
+	// Basic sanity check on client log collection. Check query expression in log "large.log" on the local server
 
 	// build the server
 	server_compile_cmd := exec.Command("go", "build", "-o", BIN_PATH_SERVER, SRC_PATH + "server_main.go")
@@ -377,7 +377,7 @@ func TestOneServerLarge(t *testing.T) {
 
 func TestOneServerHuge(t *testing.T) {
 	// Test query log from server on local machine
-	// Basic sanity check on client log collection. Check query expression in log "small.log" on the local server
+	// Basic sanity check on client log collection. Check query expression in log "huge.log" on the local server
 
 	// build the server
 	server_compile_cmd := exec.Command("go", "build", "-o", BIN_PATH_SERVER, SRC_PATH + "server_main.go")
