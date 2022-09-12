@@ -2,9 +2,9 @@ package utils
 
 import (
 	"bytes"
+	"fmt"
 	"os/exec"
 	"strings"
-	"fmt"
 )
 
 // get the command and execute it by command line, return the grep result
@@ -26,10 +26,10 @@ func Grep(command string) (string, bool) {
 	}
 
 	var stdout, stderr bytes.Buffer
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
+	cmd.Stdout = &stdout                                          // use stdout to store the output
+	cmd.Stderr = &stderr                                          // use stderr to store the error message
 	err := cmd.Run()                                              // get the result
-	if err != nil && strings.Compare(stdout.String(), "0") != 1 { // handle error
+	if err != nil && strings.Compare(stdout.String(), "0") != 1 { // handle error if grep result is not 0
 		return "command error: " + stderr.String(), false
 	}
 	return stdout.String(), true

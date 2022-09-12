@@ -22,11 +22,11 @@ func OpenLogServer(port string) { openLogServer(port) }
 func (p *grepLogService) GrepLog(request string, reply *string) error {
 	fmt.Printf("grep command：%v\n", request) // print the request command
 
-	log, ok := utils.Grep(request) // get the log query results
-	data := replyStruct{log, ok}
-	jsonData, _ := json.Marshal(data)
+	log, ok := utils.Grep(request)    // get the log query results
+	data := replyStruct{log, ok}      // use struct store log and successful message
+	jsonData, _ := json.Marshal(data) // convert to json
 	str := string(jsonData)
-	*reply = str
+	*reply = str // send back to client
 
 	return nil
 }

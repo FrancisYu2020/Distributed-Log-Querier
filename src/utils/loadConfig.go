@@ -26,6 +26,7 @@ func getConfigs() string {
 	// fmt.Println(str)
 	return str
 }
+
 func deserializeJson(configJson string) []Server {
 
 	jsonAsBytes := []byte(configJson)
@@ -37,9 +38,10 @@ func deserializeJson(configJson string) []Server {
 	// fmt.Println(configs)
 	return configs
 }
+
 func LoadConfig() []Server {
 
-	// Unmarshal each fastDeploy config component into a slice of structs.
+	// Unmarshal config component into a slice of structs.
 	jsonConfigList := getConfigs()
 	unmarshelledConfigs := deserializeJson(jsonConfigList)
 	// fmt.Println(unmarshelledConfigs)
