@@ -12,10 +12,6 @@ func Grep(command string) (string, bool) {
 	params := strings.Split(command, "\"")
 	grep := strings.Split(params[0], " ")
 	path := strings.Split(params[2][1:], " ")
-	fmt.Println("---------------------------------------------------------------------")
-	fmt.Println(params)
-	fmt.Println(grep)
-	fmt.Println(path)
 
 	var cmd *exec.Cmd
 	// execute the grep command
