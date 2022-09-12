@@ -12,9 +12,10 @@ import (
 var BIN_PATH_CLIENT string = "/home/hangy6/mp1-hangy6-tian23/bin/client"
 var BIN_PATH_SERVER string = "/home/hangy6/mp1-hangy6-tian23/bin/server"
 var SRC_PATH string = "/home/hangy6/mp1-hangy6-tian23/src/"
-var QUERY_EXPRESSION string = "world???"
+// var QUERY_EXPRESSION string = "\"w*ld???\""
+var QUERY_EXPRESSION string = "w*ld???"
 // var QUERY_EXPRESSION string = "'Hello world!\nIs go the best???'"
-// var QUERY_EXPRESSION string = "Hello"
+// var QUERY_EXPRESSION string = "\"Hello\""
 // var QUERY_EXPRESSION string = "???"
 
 func TestOneServerEmpty(t *testing.T) {
