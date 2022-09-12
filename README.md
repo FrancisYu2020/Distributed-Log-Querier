@@ -51,7 +51,7 @@ To run client program on a machine, please use following command:
 bin/client [query]
 ```
 
-The [query] in the abouve command should follow:
+The [query] in the above command should follow:
 
 ```
 grep [options] [pattern] [log_name] [output_file_path](optional)
