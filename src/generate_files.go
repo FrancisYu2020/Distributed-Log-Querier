@@ -32,6 +32,8 @@ func max(n1 int, n2 int) int {
 }
 
 func GenerateFile(word_count int, line_count int, filename string) {
+	// function to make random files with designated count of lines and desired grep -c result
+	// for the potential queries
 	if _, err := os.Stat(filename); err == nil {
 		os.Remove(filename)
 	}
