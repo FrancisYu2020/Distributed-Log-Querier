@@ -77,7 +77,7 @@ go test src/test/[test_script_name]
 ```
 
 If you want to see the execute time of tests, please use option -v.
-The local_test.go is to test the client-server mode locally where distributed_test.go will communicate with servers on other machines.
+The _local_test.go_ is to test the client-server mode locally where _distributed_test.go_ will communicate with servers on other machines.
 
 ## Support
 If you have any questions, please contact tian23@illinois.edu or hangy6@illinois.edu
