@@ -48,10 +48,10 @@ You can use config.json to configure the machines you want to query log from.
 To run client program on a machine, please use following command:
 
 ```
-bin/client
+bin/client [query]
 ```
 
-Then you need input the query command like following:
+The [query] in the abouve command should follow:
 
 ```
 grep [options] [pattern] [log_name] [output_file_path](optional)
@@ -77,6 +77,7 @@ go test src/test/[test_script_name]
 ```
 
 If you want to see the execute time of tests, please use option -v.
+The local_test.go is to test the client-server mode locally where distributed_test.go will communicate with servers on other machines.
 
 ## Support
 If you have any questions, please contact tian23@illinois.edu or hangy6@illinois.edu
