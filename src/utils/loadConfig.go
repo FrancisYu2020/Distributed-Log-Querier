@@ -16,14 +16,12 @@ type Server struct {
 func getConfigs() string {
 
 	b, err := ioutil.ReadFile("/home/hangy6/mp1-hangy6-tian23/config.json") // pass the file name
-	// fmt.Println(b, err)
 
 	if err != nil {
 		fmt.Print(err)
 	}
 
 	str := string(b) // convert content to a 'string'
-	// fmt.Println(str)
 	return str
 }
 
@@ -35,7 +33,7 @@ func deserializeJson(configJson string) []Server {
 	if err != nil {
 		panic(err)
 	}
-	// fmt.Println(configs)
+
 	return configs
 }
 
@@ -44,7 +42,6 @@ func LoadConfig() []Server {
 	// Unmarshal config component into a slice of structs.
 	jsonConfigList := getConfigs()
 	unmarshelledConfigs := deserializeJson(jsonConfigList)
-	// fmt.Println(unmarshelledConfigs)
 	return unmarshelledConfigs
 }
 
